@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">DzNews</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+
+
+    <string name="action_settings">设置</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    
+    <string name="general_setting">常规</string>
+    <string name="dark_mode_key">dark_mode_key</string>
+    <string name="dark_mode_title">夜间模式</string>
+    <string name="close_notification_key">close_notification_key</string>
+    <string name="close_notification_title">通知管理</string>
+    <string name="dark_mode_summary">要注意保护眼睛哟！</string>
+    <string name="close_notification_summary">开启免打扰模式吧！</string>
+    <string name="change_theme_key">change_theme_key</string>
+    <string name="change_theme_title">更换主题</string>
+    <string name="other_setting">其他设置</string>
+    <string name="check_update_key">check_update_key</string>
+    <string name="check_update_title">检查更新</string>
+    <string name="help_feedback_key">help_feedback_key</string>
+    <string name="help_feedback_title">帮助和反馈</string>
+    <string name="title_activity_setting">设置</string>
+    <string name="home_page">主页</string>
+    <string name="my_follow_site">我的站点</string>
+    <string name="offline_cache">离线阅读</string>
+    <string name="search_content">内容搜索</string>
+    <string name="setting">设置</string>
+    <string name="choose_theme">更换主题</string>
+    <string name="title_activity_news">NewsActivity</string>
+</resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.jenzz.materialpreference.PreferenceCategory android:title="@string/general_setting">
+        <com.jenzz.materialpreference.CheckBoxPreference android:key="@string/dark_mode_key"
+            android:title="@string/dark_mode_title"
+            android:summary="@string/dark_mode_summary"/>
+        <com.jenzz.materialpreference.SwitchPreference android:key="@string/close_notification_key"
+            android:title="@string/close_notification_title"
+            android:summaryOn="关闭免打扰模式"
+            android:summaryOff="开启免打扰模式"
+            />
+        <com.jenzz.materialpreference.Preference android:key="@string/change_theme_key"
+            android:title="@string/change_theme_title"/>
+    </com.jenzz.materialpreference.PreferenceCategory>
+    <com.jenzz.materialpreference.PreferenceCategory android:title="@string/other_setting">
+        <com.jenzz.materialpreference.Preference android:key="@string/check_update_key"
+            android:title="@string/check_update_title"/>
+        <com.jenzz.materialpreference.Preference android:key="@string/help_feedback_key"
+            android:title="@string/help_feedback_title"/>
+    </com.jenzz.materialpreference.PreferenceCategory>
+
+</PreferenceScreen>

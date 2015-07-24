@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="textColorLight">#FFF</color>
+    <color name="textColorPrimary">#212121</color>
+    <color name="textColorSecondary">#727272</color>
+    <color name="cppRed">#EF5350</color>
+    <color name="cppBlue">#2196F3</color>
+    <color name="cppPurse">#3949AB</color>
+    <color name="cppGreen">#009688</color>
+    <color name="light_grey">#ffbebebe</color>
+    <!--Theme Color-->
+    <color name="red">#FF6347</color>
+    <color name="dark_red">#F4511E</color>
+    <color name="accent_red">#FF5722</color>
+
+    <color name="brown">#795548</color>
+    <color name="dark_brown">#5D4037</color>
+    <color name="accent_brown">#795548</color>
+
+
+    <color name="blue">#2196F3</color>
+    <color name="dark_blue">#1976D2</color>
+    <color name="accent_blue">#448AFF</color>
+
+    <color name="blue_grey">#607D8B</color>
+    <color name="dark_blue_grey">#455A64</color>
+    <color name="accent_blue_grey">#607D8B</color>
+
+    <color name="yellow">#FF9800</color>
+    <color name="dark_yellow">#F57C00</color>
+    <color name="accent_yellow">#FF9800</color>
+
+    <color name="deep_purple">#673AB7</color>
+    <color name="dark_deep_purple">#512DA8</color>
+    <color name="accent_deep_purple">#7C4DFF</color>
+
+    <color name="pink">#E91E63</color>
+    <color name="dark_pink">#C2185B</color>
+    <color name="accent_pink">#FF5722</color>
+
+    <color name="green">#4CAF50</color>
+    <color name="dark_green">#388E3C</color>
+    <color name="accent_green">#4CAF50</color>
+</resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/action_home_page"
+            android:checked="true"
+            android:icon="@drawable/ic_home_white_24dp"
+            android:title="@string/home_page"/>
+
+        <item
+            android:id="@+id/action_follow"
+            android:icon="@drawable/ic_stars_white_24dp"
+            android:title="@string/my_follow_site"/>
+
+        <item   android:id="@+id/action_offline_cache"
+                android:title="@string/offline_cache"
+                android:icon="@drawable/ic_file_download_white_24dp"
+            />
+        <item   android:id="@+id/search_content"
+                android:icon="@drawable/ic_search_white_24dp"
+                android:title="@string/search_content"/>
+
+        <item   android:id="@+id/action_nav_settings"
+                android:title="@string/setting"
+                android:icon="@drawable/ic_settings_white_24dp"
+            />
+    </group>
+</menu>
