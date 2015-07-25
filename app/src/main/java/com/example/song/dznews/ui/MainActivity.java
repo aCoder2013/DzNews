@@ -96,7 +96,7 @@ public class MainActivity extends BaseActivity {
                 //判断lastPosition是不是最后一个position
                 //如果两个条件都满足则说明是真正的滑动到了底部
                 if(lastChildBottom == recyclerBottom && lastPosition == recyclerView.getLayoutManager().getItemCount()-1 ){
-                    Snackbar.make(rootLayout,"正在刷新",Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(rootLayout,"正在刷新",Snackbar.LENGTH_LONG).show();
                     int last_article_id = newsList.get(newsList.size()-1).getArticle_id();
                     getNewsList(MainActivity.this,NewsUtils.CNBETA_MORE_NEWS_URL+last_article_id);
                 }
