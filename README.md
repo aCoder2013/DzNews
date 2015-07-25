@@ -13,7 +13,7 @@ In this app ,you can learn all this stuff:
 ![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/1.png)
 ![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/2.png)
 ![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/3.png)
-![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/https://github.com/aCoder2013/DzNews/blob/master/screenshot/20150725101717.png.png)
-![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/https://github.com/aCoder2013/DzNews/blob/master/screenshot/20150725101738.png.png)
-![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/https://github.com/aCoder2013/DzNews/blob/master/screenshot/20150725101749.png.png)
+![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/https://github.com/aCoder2013/DzNews/blob/master/screenshot/20150725101717.png)
+![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/https://github.com/aCoder2013/DzNews/blob/master/screenshot/20150725101738.png)
+![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/https://github.com/aCoder2013/DzNews/blob/master/screenshot/20150725101749.png)
 
