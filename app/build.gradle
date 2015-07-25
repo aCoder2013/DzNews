@@ -31,6 +31,3 @@ dependencies {
     compile 'com.mcxiaoke.volley:library:1.0.17'
     compile 'com.squareup.picasso:picasso:2.5.2'
 }
-![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/Screenshot_2015-07-25-08-20-43.png)
-        ![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/Screenshot_2015-07-25-08-20-50.png)
-                ![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/Screenshot_2015-07-25-08-20-58.png)
