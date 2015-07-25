@@ -31,6 +31,7 @@ import com.example.song.dznews.event.ChangeThemeEvent;
 import com.example.song.dznews.model.News;
 import com.example.song.dznews.utils.NewsUtils;
 import com.example.song.dznews.utils.VolleyUtils;
+import com.yalantis.phoenix.PullToRefreshView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,6 +51,7 @@ public class MainActivity extends BaseActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle ;
     private NavigationView navigationView;
+    private PullToRefreshView pullToRefreshView;
     private RecyclerView recyclerView;
     private CoordinatorLayout rootLayout;
     private NewsItemAdapter adapter;
@@ -60,10 +62,28 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         rootLayout = (CoordinatorLayout) findViewById(R.id.rootLayout);
+        initPullToRefereshView();
         initToolbar();
         initDrawer();
         initNavigation();
         initRecyclerView();
+    }
+
+    private void initPullToRefereshView() {
+        pullToRefreshView = (PullToRefreshView) findViewById(R.id.pull_to_refresh);
+        pullToRefreshView.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                pullToRefreshView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        newsList.clear();
+                        getNewsList(MainActivity.this, NewsUtils.CNBETA_NEWS_lIST_URL);
+                        pullToRefreshView.setRefreshing(false);
+                    }
+                }, 1000);
+            }
+        });
     }
 
     private void initRecyclerView() {
