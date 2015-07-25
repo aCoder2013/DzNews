@@ -1,5 +1,5 @@
 # DzNews
-A News APP Using Android Design Support Library
+##A News APP Using Android Design Support Library
 In this app ,you can learn all this stuff:
   +   how to use Android Design Support Library
       - how to write a beautiful NavigationView
