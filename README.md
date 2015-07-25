@@ -10,7 +10,10 @@ In this app ,you can learn all this stuff:
   +   how to use Picasso
   +   how to change theme dynamically
 
-![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/20150725081511.png)
-![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/20150725081542.png)
-![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/20150725081429.png)
+![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/1.png)
+![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/2.png)
+![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/3.png)
+![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/7.png)
+![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/8.png)
+![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/9.png)
 
