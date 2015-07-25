@@ -9,10 +9,8 @@ In this app ,you can learn all this stuff:
   +   how to use Volley
   +   how to use Picasso
   +   how to change theme dynamically
- ![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/Screenshot_2015-07-25-08-20-43.png)
-![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/Screenshot_2015-07-25-08-20-50.png)
-![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/Screenshot_2015-07-25-08-20-58.png)
+
 ![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/20150725081511.png)
-![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/Screenshot_2015-07-25-08-20-43.png)
 ![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/20150725081542.png)
+![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/20150725081429.png)
 
