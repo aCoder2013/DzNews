@@ -2,6 +2,11 @@
 A News APP Using Android Design Support Library
 In this app ,you can learn all this stuff:
   +   how to use Android Design Support Library
+      - how to write a beautiful NavigationView
+      - how to use CoordinatorLayout
+      - how to use AppBarLayout
+      - how to use CollapsingToolbarLayout
+      - how to use Toolbar
   +   how to use EventBus
   +   how to use MaterialPreference to make a beautiful setting activity
   +   how to use Jsoup
