@@ -91,8 +91,7 @@ public class NewsItemAdapter extends RecyclerView.Adapter<NewsItemAdapter.NewsVi
     }
 
     public void addNews(List<News> newsList){
-        this.newsList.addAll(newsList);
-        notifyDataSetChanged();
+        this.newsList=newsList;
     }
 
     static class NewsViewHolder extends RecyclerView.ViewHolder {

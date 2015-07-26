@@ -9,10 +9,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -94,6 +93,7 @@ public class MainActivity extends BaseActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -102,9 +102,12 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-
+                Log.d(TAG,""+(recyclerView.getLayoutManager().getChildCount()-1));
                 //得到当前显示的最后一个item的view
                 View lastChildView = recyclerView.getLayoutManager().getChildAt(recyclerView.getLayoutManager().getChildCount()-1);
+                if(lastChildView==null){
+                    return;
+                }
                 //得到lastChildView的bottom坐标值
                 int lastChildBottom = lastChildView.getBottom();
                 //得到Recyclerview的底部坐标减去底部padding值，也就是显示内容最底部的坐标
@@ -254,9 +257,9 @@ public class MainActivity extends BaseActivity {
                                 News news = new News();
                                 news.setId(newsObject.getInt("id"));
                                 news.setArticle_id(newsObject.getInt("article_id"));
+                                news.setIntro(newsObject.getString("intro"));
                                 news.setTitle(newsObject.getString("title"));
                                 news.setDate(newsObject.getString("date"));
-                                news.setIntro(newsObject.getString("intro"));
                                 news.setTopic(newsObject.getString("topic"));
                                 news.setView_num(newsObject.getInt("view_num"));
                                 news.setComment_num(newsObject.getInt("comment_num"));
@@ -272,8 +275,8 @@ public class MainActivity extends BaseActivity {
                             }
                         }
                         newsList.addAll(newses);
-                        adapter.notifyDataSetChanged();
                         adapter.addNews(newsList);
+                        adapter.notifyDataSetChanged();
                     }
                 }, new Response.ErrorListener() {
             @Override
