@@ -16,7 +16,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.song.dznews.R;
-import com.example.song.dznews.model.NewsDetail;
 import com.example.song.dznews.utils.NewsUtils;
 import com.example.song.dznews.utils.PreferenceUtils;
 import com.example.song.dznews.utils.ThemeUtils;
@@ -24,6 +23,8 @@ import com.example.song.dznews.utils.VolleyUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import db.greendao.dznews.NewsDetail;
 
 public class NewsActivity extends AppCompatActivity {
     private  int article_id ;
@@ -75,7 +76,7 @@ public class NewsActivity extends AppCompatActivity {
     }
 
 
-    private void getNewsDetail(final int article_id){
+    private void getNewsDetail(final long article_id){
         String article_url = NewsUtils.CNBETA_GET_NEWS_DETAIL+article_id;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, article_url, new Response.Listener<JSONObject>() {
             @Override

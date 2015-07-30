@@ -13,12 +13,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.song.dznews.R;
-import com.example.song.dznews.model.News;
 import com.example.song.dznews.ui.NewsActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import db.greendao.dznews.News;
 
 /**
  * Created by Song on 2015/7/22.

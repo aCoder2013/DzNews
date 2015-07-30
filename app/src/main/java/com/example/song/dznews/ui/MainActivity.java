@@ -2,7 +2,8 @@ package com.example.song.dznews.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.PersistableBundle;
+import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -21,13 +22,14 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.Request;
- import com.android.volley.Response;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.example.song.dznews.MyApplication;
 import com.example.song.dznews.R;
 import com.example.song.dznews.adapter.NewsItemAdapter;
 import com.example.song.dznews.event.ChangeThemeEvent;
-import com.example.song.dznews.model.News;
+import com.example.song.dznews.utils.NewsConstant;
 import com.example.song.dznews.utils.NewsUtils;
 import com.example.song.dznews.utils.VolleyUtils;
 import com.yalantis.phoenix.PullToRefreshView;
@@ -37,15 +39,26 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import db.greendao.dznews.DaoMaster;
+import db.greendao.dznews.DaoSession;
+import db.greendao.dznews.News;
+import db.greendao.dznews.NewsDao;
 import de.greenrobot.event.EventBus;
+
+import static com.example.song.dznews.ui.MainActivity.NewsLoadType.LOAD_MORE;
+import static com.example.song.dznews.ui.MainActivity.NewsLoadType.REFERESH;
 
 public class MainActivity extends BaseActivity {
     private static final String TAG="MainActivity";
 
     private long  lastExitTime;//上次按下返回键的时间
-
+    private boolean haveCache =false;
+    private SharedPreferences sharedPreference;
+    private SharedPreferences.Editor editor;
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle ;
@@ -55,17 +68,41 @@ public class MainActivity extends BaseActivity {
     private CoordinatorLayout rootLayout;
     private NewsItemAdapter adapter;
     private List<News> newsList = new ArrayList<>() ;
+    private DaoMaster daoMaster;
+    private DaoSession daoSession;
+    private NewsDao newsDao;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         initTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         rootLayout = (CoordinatorLayout) findViewById(R.id.rootLayout);
+        initDB();
+        initSharedPre();
         initPullToRefereshView();
         initToolbar();
         initDrawer();
         initNavigation();
         initRecyclerView();
+    }
+
+    private void initSharedPre() {
+        sharedPreference = getSharedPreferences(NewsConstant.CACHE_PREFERENCE_NAME,MODE_PRIVATE);
+        editor =sharedPreference.edit();
+        //Check if there is caches
+        haveCache = sharedPreference.getBoolean(NewsConstant.NEWS_HAVE_CACHES,false);
+        if(haveCache){
+            newsList.clear();
+            newsList.addAll(newsDao.queryBuilder().orderDesc(NewsDao.Properties.Id).list());
+        }else {
+            getNewsList(MainActivity.this, NewsUtils.CNBETA_NEWS_lIST_URL,REFERESH);
+        }
+    }
+
+    private void initDB() {
+        daoMaster = MyApplication.getDaoMaster(MainActivity.this);
+        daoSession =  daoMaster.newSession();
+        newsDao = daoSession.getNewsDao();
     }
 
     private void initPullToRefereshView() {
@@ -76,8 +113,9 @@ public class MainActivity extends BaseActivity {
                 pullToRefreshView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        newsDao.deleteAll();//删除旧数据
                         newsList.clear();
-                        getNewsList(MainActivity.this, NewsUtils.CNBETA_NEWS_lIST_URL);
+                        getNewsList(MainActivity.this, NewsUtils.CNBETA_NEWS_lIST_URL,REFERESH);
                         pullToRefreshView.setRefreshing(false);
                     }
                 }, 1000);
@@ -88,7 +126,7 @@ public class MainActivity extends BaseActivity {
     private void initRecyclerView() {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        getNewsList(MainActivity.this,NewsUtils.CNBETA_NEWS_lIST_URL);
+
         adapter = new NewsItemAdapter(newsList,MainActivity.this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -121,7 +159,7 @@ public class MainActivity extends BaseActivity {
                 if(lastChildBottom == recyclerBottom && lastPosition == recyclerView.getLayoutManager().getItemCount()-1 ){
                     Snackbar.make(rootLayout,"正在刷新",Snackbar.LENGTH_LONG).show();
                     int last_article_id = newsList.get(newsList.size()-1).getArticle_id();
-                    getNewsList(MainActivity.this,NewsUtils.CNBETA_MORE_NEWS_URL+last_article_id);
+                    getNewsList(MainActivity.this,NewsUtils.CNBETA_MORE_NEWS_URL+last_article_id,LOAD_MORE);
                 }
             }
         });
@@ -244,7 +282,11 @@ public class MainActivity extends BaseActivity {
 
 
 
-    public  void getNewsList(Context context,String news_url){
+    /*
+        Get NewsList
+        @Param newsLoadType:新闻加载类型，接受MainActivity.NewsLoadType类型
+     */
+    public  void getNewsList(Context context,String news_url,final NewsLoadType newsLoadType){
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, news_url,
                 new Response.Listener<JSONArray>() {
@@ -254,20 +296,16 @@ public class MainActivity extends BaseActivity {
                         for(int i =0;i<response.length();i++){
                             try {
                                 JSONObject newsObject  =response.getJSONObject(i);
-                                News news = new News();
-                                news.setId(newsObject.getInt("id"));
-                                news.setArticle_id(newsObject.getInt("article_id"));
-                                news.setIntro(newsObject.getString("intro"));
-                                news.setTitle(newsObject.getString("title"));
-                                news.setDate(newsObject.getString("date"));
-                                news.setTopic(newsObject.getString("topic"));
-                                news.setView_num(newsObject.getInt("view_num"));
-                                news.setComment_num(newsObject.getInt("comment_num"));
-                                news.setSource(newsObject.getString("source"));
-                                news.setSource_link(newsObject.getString("source_link"));
-                                news.setHot(newsObject.getInt("hot"));
-                                news.setPushed(newsObject.getInt("pushed"));
-                                Log.d(TAG,news.toString());
+                                News news = getNews(newsObject);
+                                switch(newsLoadType){
+                                    case REFERESH:
+                                        newsDao.insert(news);
+                                        break;
+                                    case LOAD_MORE:
+                                        break;
+                                    default:break;
+
+                                }
                                 newses.add(news);
                             } catch (JSONException e) {
                                 Log.d(TAG,e.getMessage());
@@ -286,5 +324,36 @@ public class MainActivity extends BaseActivity {
             }
         });
         VolleyUtils.getInstance(MainActivity.this).addToRequestQueue(request);
+        editor.putBoolean(NewsConstant.NEWS_HAVE_CACHES,true);
+        editor.commit();
+    }
+
+    /*
+        Helper Method To Get NewsList
+     */
+    @NonNull
+    private News getNews(JSONObject newsObject) throws JSONException {
+        News news = new News();
+        news.setId(newsObject.getLong("id"));
+        news.setArticle_id(newsObject.getInt("article_id"));
+        news.setIntro(newsObject.getString("intro"));
+        news.setTitle(newsObject.getString("title"));
+        news.setDate(newsObject.getString("date"));
+        news.setTopic(newsObject.getString("topic"));
+        news.setView_num(newsObject.getInt("view_num"));
+        news.setComment_num(newsObject.getInt("comment_num"));
+        news.setSource(newsObject.getString("source"));
+        news.setSource_link(newsObject.getString("source_link"));
+        news.setHot(newsObject.getInt("hot"));
+        news.setPushed(newsObject.getInt("pushed"));
+        Log.d(TAG, news.toString());
+        return news;
+    }
+
+    /*
+        新闻加载类型
+     */
+    enum NewsLoadType{
+        REFERESH,LOAD_MORE
     }
 }
