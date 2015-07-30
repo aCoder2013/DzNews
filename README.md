@@ -14,6 +14,7 @@ In this app ,you can learn all this stuff:
   +   how to use Volley
   +   how to use Picasso
   +   how to change theme dynamically
+  +   how to use **GreenDao**
 
 ![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/1.png)
 ![image](https://github.com/aCoder2013/DzNews/blob/master/screenshot/2.png)
