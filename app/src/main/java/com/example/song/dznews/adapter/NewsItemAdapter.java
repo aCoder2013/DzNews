@@ -112,8 +112,6 @@ public class NewsItemAdapter extends RecyclerView.Adapter<NewsItemAdapter.NewsVi
             news_desc= (TextView) itemView.findViewById(R.id.news_desc);
             share= (Button) itemView.findViewById(R.id.btn_share);
             readMore= (Button) itemView.findViewById(R.id.btn_more);
-            //设置TextView背景为半透明
-            news_title.setBackgroundColor(Color.argb(20, 0, 0, 0));
         }
     }
 
