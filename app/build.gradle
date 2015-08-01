@@ -16,6 +16,7 @@ android {
             manifest.srcFile 'src/main/AndroidManifest.xml'
             java.srcDirs = ['src/main/java', '../DaoExample/src/main/java-gen']
             res.srcDirs = ['src/main/res']
+            jniLibs.srcDirs = ['libs']
         }
     }
     buildTypes {
@@ -27,16 +28,17 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.android.support:design:22.2.0'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'com.jenzz:materialpreference:1.3'
-    compile "org.jsoup:jsoup:1.8.2"
+    compile 'org.jsoup:jsoup:1.8.2'
     compile 'com.android.support:cardview-v7:22.2.0'
     compile 'com.android.support:recyclerview-v7:22.2.0'
     compile 'com.mcxiaoke.volley:library:1.0.17'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.yalantis:phoenix:1.2.2'
     compile 'de.greenrobot:greendao:2.0.0'
+    compile project(':weiboSDK')
 }

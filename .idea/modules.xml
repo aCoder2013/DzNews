@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/DzNews.iml" filepath="$PROJECT_DIR$/DzNews.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/greendaoib/greendaoib.iml" filepath="$PROJECT_DIR$/greendaoib/greendaoib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/weiboSDK/weiboSDK.iml" filepath="$PROJECT_DIR$/weiboSDK/weiboSDK.iml" />
     </modules>
   </component>
 </project>

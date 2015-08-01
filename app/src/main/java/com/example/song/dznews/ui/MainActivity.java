@@ -14,11 +14,13 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -32,6 +34,16 @@ import com.example.song.dznews.event.ChangeThemeEvent;
 import com.example.song.dznews.utils.NewsConstant;
 import com.example.song.dznews.utils.NewsUtils;
 import com.example.song.dznews.utils.VolleyUtils;
+import com.sina.weibo.sdk.auth.AuthInfo;
+import com.sina.weibo.sdk.auth.Oauth2AccessToken;
+import com.sina.weibo.sdk.auth.WeiboAuthListener;
+import com.sina.weibo.sdk.auth.sso.SsoHandler;
+import com.sina.weibo.sdk.exception.WeiboException;
+import com.sina.weibo.sdk.net.RequestListener;
+import com.sina.weibo.sdk.openapi.UsersAPI;
+import com.sina.weibo.sdk.openapi.models.User;
+import com.sina.weibo.sdk.utils.LogUtil;
+import com.squareup.picasso.Picasso;
 import com.yalantis.phoenix.PullToRefreshView;
 
 import org.json.JSONArray;
@@ -40,6 +52,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import db.greendao.dznews.DaoMaster;
 import db.greendao.dznews.DaoSession;
@@ -69,6 +82,12 @@ public class MainActivity extends BaseActivity {
     private DaoMaster daoMaster;
     private DaoSession daoSession;
     private NewsDao newsDao;
+    private AuthInfo authInfo;
+    private SsoHandler ssoHandler;
+    private RoundedImageView header_image;
+    private TextView header_text_title;
+    private TextView header_email;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         initTheme();
@@ -188,6 +207,14 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (ssoHandler != null) {
+            ssoHandler.authorizeCallBack(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
         super.onDestroy();
@@ -201,6 +228,23 @@ public class MainActivity extends BaseActivity {
 
     private void initNavigation() {
         navigationView = (NavigationView) findViewById(R.id.nav_view);
+        header_image = (RoundedImageView) findViewById(R.id.header_image);
+        header_text_title = (TextView) findViewById(R.id.header_text_title);
+        header_email = (TextView) findViewById(R.id.header_email);
+        if(sharedPreference.getLong("uuid",0L)!=0L){
+            Picasso.with(MainActivity.this).load(sharedPreference.getString("avatar_hd",null)).into(header_image);
+            header_text_title.setText(sharedPreference.getString("screen_name",null));
+            header_email.setText(sharedPreference.getString("profile_url","登陆了就是不一样"));
+        }
+        //微博登陆
+        authInfo  = new AuthInfo(this,NewsConstant.APP_KEY,NewsConstant.REDIRECT_URL,NewsConstant.SCOPE);
+        header_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ssoHandler = new SsoHandler(MainActivity.this, authInfo);
+                ssoHandler.authorizeClientSso(new AuthListener());
+            }
+        });
         //监听导航栏菜单点击事件
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -218,6 +262,7 @@ public class MainActivity extends BaseActivity {
             }
         });
     }
+
 
     private void initDrawer() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -354,4 +399,68 @@ public class MainActivity extends BaseActivity {
     enum NewsLoadType{
         REFERESH,LOAD_MORE
     }
+
+    /*
+        内部类
+     */
+    class AuthListener implements WeiboAuthListener {
+        private static final String TAG="AuthListener";
+        private Oauth2AccessToken accessToken;
+        private UsersAPI usersAPI;
+        @Override
+        public void onComplete(Bundle bundle) {
+            accessToken = Oauth2AccessToken.parseAccessToken(bundle); // 从 Bundle 中解析 Token
+            accessToken.getUid();
+            if (accessToken.isSessionValid()) {
+                long uuid = Long.parseLong(accessToken.getUid());
+                editor.putLong("uuid",uuid);
+                usersAPI = new UsersAPI(MainActivity.this, NewsConstant.APP_KEY,accessToken);
+                usersAPI.show(uuid, new RequestListener() {
+                    @Override
+                    public void onComplete(String response) {
+                        if (!TextUtils.isEmpty(response)) {
+                            LogUtil.i(TAG, response);
+                            // 调用 User#parse 将JSON串解析成User对象
+                            User user = User.parse(response);
+                            if (user != null) {
+                                editor.putString("screen_name",user.screen_name);//昵称
+                                editor.putString("domain",user.description);//个性化域名
+                                editor.putString("avatar_hd",user.avatar_hd);//高清头像地址
+                                Picasso.with(MainActivity.this).load(user.avatar_hd).into(header_image);
+                                header_text_title.setText(user.screen_name);
+                                header_email.setText(user.profile_url);
+                                Log.d(TAG,user.description);
+                                Log.d(TAG,user.domain);
+                                Toast.makeText(MainActivity.this,"登陆成功",Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(MainActivity.this, "获取失败", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onWeiboException(WeiboException e) {
+
+                    }
+                });
+            } else {
+                // 当您注册的应用程序签名不正确时，就会收到错误Code，请确保签名正确
+                String code = bundle.getString("code", "");
+                Log.e(TAG,code);
+            }
+        }
+
+        @Override
+        public void onWeiboException(WeiboException e) {
+
+        }
+
+        @Override
+        public void onCancel() {
+
+        }
+
+
+    }
+
 }

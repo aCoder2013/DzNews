@@ -111,5 +111,6 @@
     <orderEntry type="library" exported="" name="phoenix-1.2.2" level="project" />
     <orderEntry type="library" exported="" name="design-22.2.0" level="project" />
     <orderEntry type="library" exported="" name="cardview-v7-22.2.0" level="project" />
+    <orderEntry type="module" module-name="weiboSDK" exported="" />
   </component>
 </module>
