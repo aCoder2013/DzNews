@@ -52,7 +52,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import db.greendao.dznews.DaoMaster;
 import db.greendao.dznews.DaoSession;
@@ -65,7 +64,8 @@ import static com.example.song.dznews.ui.MainActivity.NewsLoadType.REFERESH;
 
 public class MainActivity extends BaseActivity {
     private static final String TAG="MainActivity";
-
+    public static int sScreenWidth;
+    public static int sProfileImageHeight;
     private long  lastExitTime;//上次按下返回键的时间
     private boolean haveCache =false;
     private SharedPreferences sharedPreference;
@@ -93,6 +93,8 @@ public class MainActivity extends BaseActivity {
         initTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sScreenWidth = getResources().getDisplayMetrics().widthPixels;
+        sProfileImageHeight = getResources().getDimensionPixelSize(R.dimen.height_profile_image);
         rootLayout = (CoordinatorLayout) findViewById(R.id.rootLayout);
         initDB();
         initSharedPre();
@@ -335,7 +337,7 @@ public class MainActivity extends BaseActivity {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        ArrayList newses = new ArrayList<>();
+                        ArrayList<News> newses = new ArrayList<>();
                         for(int i =0;i<response.length();i++){
                             try {
                                 JSONObject newsObject  =response.getJSONObject(i);
@@ -428,7 +430,7 @@ public class MainActivity extends BaseActivity {
                                 editor.putString("avatar_hd",user.avatar_hd);//高清头像地址
                                 Picasso.with(MainActivity.this).load(user.avatar_hd).into(header_image);
                                 header_text_title.setText(user.screen_name);
-                                header_email.setText(user.profile_url);
+                                header_email.setText("登陆了就是不一样");
                                 Log.d(TAG,user.description);
                                 Log.d(TAG,user.domain);
                                 Toast.makeText(MainActivity.this,"登陆成功",Toast.LENGTH_LONG).show();

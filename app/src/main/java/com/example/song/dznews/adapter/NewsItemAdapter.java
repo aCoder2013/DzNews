@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.song.dznews.R;
+import com.example.song.dznews.ui.MainActivity;
 import com.example.song.dznews.ui.NewsActivity;
 import com.squareup.picasso.Picasso;
 
@@ -49,7 +50,9 @@ public class NewsItemAdapter extends RecyclerView.Adapter<NewsItemAdapter.NewsVi
     @Override
     public void onBindViewHolder(NewsItemAdapter.NewsViewHolder holder, int position) {
         final int j=position;
-        Picasso.with(context).load("http:"+newsList.get(position).getTopic()).into(holder.news_photo);
+        Picasso.with(context).load("http:"+newsList.get(position).getTopic())
+                .resize(MainActivity.sScreenWidth,MainActivity.sProfileImageHeight)
+                .into(holder.news_photo);
         holder.news_title.setText(newsList.get(position).getTitle());
         holder.news_desc.setText(newsList.get(position).getIntro());
 
@@ -63,26 +66,26 @@ public class NewsItemAdapter extends RecyclerView.Adapter<NewsItemAdapter.NewsVi
             }
         });
 
-        holder.share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(Intent.ACTION_SEND);
-                intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
-                intent.putExtra(Intent.EXTRA_TEXT, newsList.get(j).getIntro());
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(Intent.createChooser(intent, newsList.get(j).getTitle()));
-            }
-        });
-
-        holder.readMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(context,NewsActivity.class);
-                intent.putExtra("article_id",newsList.get(j).getArticle_id());
-                context.startActivity(intent);
-            }
-        });
+//        holder.share.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent=new Intent(Intent.ACTION_SEND);
+//                intent.setType("text/plain");
+//                intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
+//                intent.putExtra(Intent.EXTRA_TEXT, newsList.get(j).getIntro());
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                context.startActivity(Intent.createChooser(intent, newsList.get(j).getTitle()));
+//            }
+//        });
+//
+//        holder.readMore.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent=new Intent(context,NewsActivity.class);
+//                intent.putExtra("article_id",newsList.get(j).getArticle_id());
+//                context.startActivity(intent);
+//            }
+//        });
 
     }
 
@@ -100,8 +103,8 @@ public class NewsItemAdapter extends RecyclerView.Adapter<NewsItemAdapter.NewsVi
         ImageView news_photo;
         TextView news_title;
         TextView news_desc;
-        Button share;
-        Button readMore;
+//        Button share;
+//        Button readMore;
 
 
         public NewsViewHolder(View itemView) {
@@ -110,8 +113,8 @@ public class NewsItemAdapter extends RecyclerView.Adapter<NewsItemAdapter.NewsVi
             news_photo= (ImageView) itemView.findViewById(R.id.news_photo);
             news_title= (TextView) itemView.findViewById(R.id.news_title);
             news_desc= (TextView) itemView.findViewById(R.id.news_desc);
-            share= (Button) itemView.findViewById(R.id.btn_share);
-            readMore= (Button) itemView.findViewById(R.id.btn_more);
+//            share= (Button) itemView.findViewById(R.id.btn_share);
+//            readMore= (Button) itemView.findViewById(R.id.btn_more);
         }
     }
 

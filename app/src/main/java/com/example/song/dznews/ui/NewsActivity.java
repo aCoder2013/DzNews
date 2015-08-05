@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -23,6 +24,8 @@ import com.example.song.dznews.utils.VolleyUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.lang.reflect.InvocationTargetException;
 
 import db.greendao.dznews.NewsDetail;
 
@@ -65,11 +68,13 @@ public class NewsActivity extends AppCompatActivity {
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.rootLayout);
         toolbar= (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbarLayout);
         news_content_webview = (WebView) findViewById(R.id.news_content);
         WebSettings settings = news_content_webview.getSettings();
-        settings.setDefaultTextEncodingName("UTF-8") ;
+        settings.setDefaultTextEncodingName("UTF-8");
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         settings.setBuiltInZoomControls(false); // 设置显示缩放按钮
         settings.setSupportZoom(false); // 支持缩放
@@ -106,6 +111,7 @@ public class NewsActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_news, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
